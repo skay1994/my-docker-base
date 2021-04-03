@@ -1,0 +1,62 @@
+version: '3'
+
+services:
+  server-php7:
+    build: 
+      context: ./php
+      args:
+        - PHP_VERSION=7.4
+        - PHP_EXTENSIONS=mongodb
+    volumes: 
+      - ${CODE_PATH_HOST}:/var/www/html
+      - ${HOST_SITES_AVAILABLE_PATH}:/etc/apache2/sites-available
+      - ${LOG_PATH_HOST}:/var/log/apache2/logs
+      - ${COMPOSER_CACHE_PATH_HOST}./php/composer:/var/www/.composer
+    ports: 
+      - "80:80"
+  server:
+    build:
+      context: ./php
+    volumes: 
+      - ${CODE_PATH_HOST}:/var/www/html
+      - ${HOST_SITES_AVAILABLE_PATH}:/etc/apache2/sites-available
+      - ${LOG_PATH_HOST}:/var/log/apache2/logs
+      - ${COMPOSER_CACHE_PATH_HOST}./php/composer:/var/www/.composer
+    ports: 
+      - "80:80"
+    depends_on: 
+      - database
+  database:
+    image: mysql:latest
+    command: --default-authentication-plugin=mysql_native_password
+    volumes: 
+      - volume-data:/var/lib/mysql
+    ports: 
+      - "3306:3306" 
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+  phpmyadmin:
+    image: phpmyadmin:latest
+    ports:
+      - 8080:80
+    environment:
+      - PMA_HOST=database
+      - PMA_USER=root
+      - PMA_PASSWORD=root
+    depends_on: 
+      - database
+  mongo_db:
+    image: mongo:latest
+    environment:
+      MONGO_DATA_DIR: /data/mongodb
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: e296cd9f
+      MONGO_INITDB_DATABASE: admin
+    ports:
+      - "27017:27017"
+    command: mongod --auth
+    volumes:
+      - volume-data:/data/mongodb
+
+volumes:
+  volume-data:

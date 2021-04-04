@@ -1,0 +1,14 @@
+FROM crystallang/crystal:1.0.0-alpine AS build
+
+RUN mkdir -p /opt/build
+WORKDIR /opt/build
+RUN git clone https://github.com/mint-lang/mint.git .
+RUN shards install --ignore-crystal-version
+RUN crystal build src/mint.cr -o mint --static --release --no-debug
+
+FROM alpine
+RUN mkdir -p /opt/mint
+
+COPY --from=build /opt/build/mint /bin/mint
+
+WORKDIR /opt/mint

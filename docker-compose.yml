@@ -57,6 +57,15 @@ services:
     command: mongod --auth
     volumes:
       - volume-data:/data/mongodb
+  
+  mint-server:
+    build:
+      context: ./mint
+    volumes:
+      - ./../mint:/opt/mint
+    ports:
+      - "8000:3000"
+    command: tail -f /dev/null
 
 volumes:
   volume-data:

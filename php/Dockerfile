@@ -6,20 +6,23 @@ COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr
 
 RUN install-php-extensions gd zip xdebug mysqli pdo_mysql opcache
 
-ARG PHP_EXTENSIONS=false
+ARG PHP_EXTENSIONS=''
 
-RUN if [${PHP_EXTENSIONS} != false]; then \
-    install-php-extensions ${PHP_EXTENSIONS}\
+RUN if [ ! -z "$PHP_EXTENSIONS" ]; then \
+    install-php-extensions $PHP_EXTENSIONS\
 ;fi
 
 RUN apt-get update; \ 
     apt-get install -y\
     zip \
-    unzip
+    unzip \
+    git
 
 COPY ./conf.d /usr/local/etc/php/conf.d
 
 COPY vhost.conf /etc/apache2/sites-enabled/vhost.conf
+
+RUN a2enmod rewrite
 
 VOLUME ["/var/log/apache2/logs/"]
 

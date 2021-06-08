@@ -8,6 +8,7 @@ RUN install-php-extensions gd zip xdebug mysqli pdo_mysql opcache
 
 ARG PHP_EXTENSIONS=''
 
+
 RUN if [ ! -z "$PHP_EXTENSIONS" ]; then \
     install-php-extensions $PHP_EXTENSIONS\
 ;fi
@@ -18,11 +19,20 @@ RUN apt-get update; \
     unzip \
     git
 
+ARG PHP_SYMPHONY_CLI=false
+
+RUN if [ ${PHP_SYMPHONY_CLI} = true ]; then \
+    curl -sS https://get.symfony.com/cli/installer | bash && \
+    mv /root/.symfony/bin/symfony /usr/local/bin/symfony\
+;fi
+
 COPY ./conf.d /usr/local/etc/php/conf.d
 
 COPY vhost.conf /etc/apache2/sites-enabled/vhost.conf
 
 RUN a2enmod rewrite
+
+RUN chown -R www-data: /var/www/
 
 VOLUME ["/var/log/apache2/logs/"]
 

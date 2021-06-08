@@ -1,1 +1,5 @@
 /php/logs/*.log
+/php/composer
+/mint/mint_core
+/mint/Dockerfile_custom
+gitlab

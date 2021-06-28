@@ -2,9 +2,12 @@ ARG PHP_VERSION=8.0.3-apache
 FROM php:${PHP_VERSION}
 
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+
+ENV PATH="/var/www/.composer/vendor/bin:$PATH"
+
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
-RUN install-php-extensions gd zip xdebug mysqli pdo_mysql opcache
+RUN install-php-extensions gd zip xdebug mysqli pdo_mysql opcache intl
 
 ARG PHP_EXTENSIONS=''
 

@@ -1,5 +1,5 @@
-ARG PHP_VERSION=8.0.3
-FROM php:${PHP_VERSION}-apache
+ARG PHP_VERSION=8.0.3-apache
+FROM php:${PHP_VERSION}
 
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/

@@ -20,10 +20,15 @@ RUN apt-get update; \
     git
 
 ARG PHP_SYMPHONY_CLI=false
+ARG PHP_LARAVEL_CLI=false
 
 RUN if [ ${PHP_SYMPHONY_CLI} = true ]; then \
     curl -sS https://get.symfony.com/cli/installer | bash && \
     mv /root/.symfony/bin/symfony /usr/local/bin/symfony\
+;fi
+
+RUN if [ ${PHP_LARAVEL_CLI} = true ]; then \
+    composer global require laravel/installer \
 ;fi
 
 COPY ./conf.d /usr/local/etc/php/conf.d

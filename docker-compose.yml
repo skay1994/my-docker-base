@@ -18,6 +18,7 @@ services:
       context: ./php
       args: 
         - PHP_SYMPHONY_CLI=true
+        - PHP_LARAVEL_CLI=true
     volumes: 
       - ${CODE_PATH_HOST}:/var/www/html
       - ${HOST_SITES_AVAILABLE_PATH}:/etc/apache2/sites-available

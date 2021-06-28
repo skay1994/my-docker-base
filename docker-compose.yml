@@ -11,7 +11,6 @@ services:
       - ${CODE_PATH_HOST}:/var/www/html
       - ${HOST_SITES_AVAILABLE_PATH}:/etc/apache2/sites-available
       - ${LOG_PATH_HOST}:/var/log/apache2/logs
-      - ${COMPOSER_CACHE_PATH_HOST}:/var/www/.composer
     ports: 
       - "80:80"
   server:
@@ -23,7 +22,6 @@ services:
       - ${CODE_PATH_HOST}:/var/www/html
       - ${HOST_SITES_AVAILABLE_PATH}:/etc/apache2/sites-available
       - ${LOG_PATH_HOST}:/var/log/apache2/logs
-      - ${COMPOSER_CACHE_PATH_HOST}./php/composer:/var/www/.composer
     ports: 
       - "80:80"
     depends_on: 

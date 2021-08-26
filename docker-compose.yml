@@ -13,6 +13,7 @@ services:
       - ${LOG_PATH_HOST}:/var/log/apache2/logs
     ports: 
       - "80:80"
+      - "443:443"
   server:
     build:
       context: ./php
@@ -25,6 +26,7 @@ services:
       - ${LOG_PATH_HOST}:/var/log/apache2/logs
     ports: 
       - "80:80"
+      - "443:443"
     depends_on: 
       - database
   database:

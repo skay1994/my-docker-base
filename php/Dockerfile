@@ -37,7 +37,9 @@ COPY ./conf.d /usr/local/etc/php/conf.d
 
 COPY vhost.conf /etc/apache2/sites-enabled/vhost.conf
 
-RUN a2enmod rewrite
+RUN openssl req -new -newkey rsa:4096 -days 3650 -nodes -x509 -subj \
+    "/C=US" \
+    -keyout /var/www/ssl.key -out /var/www/ssl.crt
 
 RUN chown -R www-data: /var/www/
 

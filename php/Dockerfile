@@ -41,6 +41,8 @@ RUN openssl req -new -newkey rsa:4096 -days 3650 -nodes -x509 -subj \
     "/C=US" \
     -keyout /var/www/ssl.key -out /var/www/ssl.crt
 
+RUN a2enmod rewrite ssl
+
 RUN chown -R www-data: /var/www/
 
 VOLUME ["/var/log/apache2/logs/"]

@@ -13,7 +13,7 @@ ARG PHP_EXTENSIONS=''
 
 RUN if [ ! -z "$PHP_EXTENSIONS" ]; then \
     install-php-extensions $PHP_EXTENSIONS\
-;fi
+    ;fi
 
 RUN apt-get update; \ 
     apt-get install -y\
@@ -27,11 +27,7 @@ ARG PHP_LARAVEL_CLI=false
 RUN if [ ${PHP_SYMPHONY_CLI} = true ]; then \
     curl -sS https://get.symfony.com/cli/installer | bash && \
     mv /root/.symfony/bin/symfony /usr/local/bin/symfony\
-;fi
-
-RUN if [ ${PHP_LARAVEL_CLI} = true ]; then \
-    composer global require laravel/installer \
-;fi
+    ;fi
 
 COPY ./conf.d /usr/local/etc/php/conf.d
 
@@ -54,3 +50,7 @@ ENV PHP_TIMEZONE "UTC+3"
 # RUN apache2ctl -S
 
 USER www-data
+
+RUN if [ ${PHP_LARAVEL_CLI} = true ]; then \
+    composer global require laravel/installer \
+    ;fi
